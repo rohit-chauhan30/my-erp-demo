@@ -89,19 +89,40 @@ export default function MultiRoleERPMock() {
     setBrokerForm({ name: "", email: "", phone: "", address: "", city: "", state: "", zip: "", logo: null });
     toast.success("Broker created (mock)");
   };
+  
 
-  // Add Customer (Broker action) -> starts timer when Generate OTP clicked
-  const generateOtpForCustomer = (form: any) => {
-    // create temp customer record saved but status Pending until OTP verification
-    const id = `CUS-${5000 + customers.length + 1}`;
-    const timestamp = Date.now();
-    const rec = { id, ...form, status: "Pending", verified: false, lastContact: null, timerStartedAt: timestamp, aadhar: null, pan: null };
-    setCustomers([...customers, rec]);
-    // open OTP modal to simulate sending
-    setOtpTarget({ type: 'customer', id });
-    setShowOtpModal(true);
-    toast.message("OTP generated & sent (mock). Use 123456 to verify.");
+// 1. Form interface
+interface CustomerForm {
+  name: string;
+  email: string;
+  phone: string;
+  propertyUnit?: string; // optional, kyunki booking me use ho raha
+  brokerId?: string;     // optional
+}
+
+// 2. Function signature
+const generateOtpForCustomer = (form: CustomerForm) => {
+  const id = `CUS-${5000 + customers.length + 1}`;
+  const timestamp = Date.now();
+  
+  const rec = {
+    id,
+    ...form,
+    status: "Pending",
+    verified: false,
+    lastContact: null,
+    timerStartedAt: timestamp,
+    aadhar: null,
+    pan: null,
   };
+  
+  setCustomers([...customers, rec]);
+
+  setOtpTarget({ type: 'customer', id });
+  setShowOtpModal(true);
+  toast.message("OTP generated & sent (mock). Use 123456 to verify.");
+};
+
 
   const verifyOtp = () => {
     if (otpValue.trim() === "123456") {

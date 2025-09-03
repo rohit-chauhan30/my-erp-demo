@@ -91,7 +91,7 @@ export default function MultiRoleERPMock() {
   };
 
   // Add Customer (Broker action) -> starts timer when Generate OTP clicked
-  const generateOtpForCustomer = (form) => {
+  const generateOtpForCustomer = (form: any) => {
     // create temp customer record saved but status Pending until OTP verification
     const id = `CUS-${5000 + customers.length + 1}`;
     const timestamp = Date.now();

@@ -54,7 +54,7 @@ export default function MultiRoleERPMock() {
   const [customerForm, setCustomerForm] = useState({ name: "", email: "", phone: "", brokerId: "", propertyUnit: "" });
 
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const [otpTarget, setOtpTarget] = useState(null); // {type: 'customer'|'broker-login'|'customer-application', id}
+  const [otpTarget, setOtpTarget] = useState<any>(null); // {type: 'customer'|'broker-login'|'customer-application', id}
   const [otpValue, setOtpValue] = useState("");
 
   const [showBookingView, setShowBookingView] = useState(false);

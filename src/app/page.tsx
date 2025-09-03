@@ -2,13 +2,13 @@
 
 import React, { useMemo, useState, useEffect } from "react";
 import { Bot, LayoutDashboard, Users2, Building2, Landmark, CreditCard, Settings, Send, Plus, CheckCircle2, XCircle, ChevronRight, UserCheck, FileText } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Toaster } from "@/components/ui/sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { Badge } from "../components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../components/ui/dialog";
+import { Toaster } from "../components/ui/sonner";
 import { toast } from "sonner";
 
 /**
@@ -89,40 +89,19 @@ export default function MultiRoleERPMock() {
     setBrokerForm({ name: "", email: "", phone: "", address: "", city: "", state: "", zip: "", logo: null });
     toast.success("Broker created (mock)");
   };
-  
 
-// 1. Form interface
-interface CustomerForm {
-  name: string;
-  email: string;
-  phone: string;
-  propertyUnit?: string; // optional, kyunki booking me use ho raha
-  brokerId?: string;     // optional
-}
-
-// 2. Function signature
-const generateOtpForCustomer = (form: CustomerForm) => {
-  const id = `CUS-${5000 + customers.length + 1}`;
-  const timestamp = Date.now();
-  
-  const rec = {
-    id,
-    ...form,
-    status: "Pending",
-    verified: false,
-    lastContact: null,
-    timerStartedAt: timestamp,
-    aadhar: null,
-    pan: null,
+  // Add Customer (Broker action) -> starts timer when Generate OTP clicked
+  const generateOtpForCustomer = (form) => {
+    // create temp customer record saved but status Pending until OTP verification
+    const id = `CUS-${5000 + customers.length + 1}`;
+    const timestamp = Date.now();
+    const rec = { id, ...form, status: "Pending", verified: false, lastContact: null, timerStartedAt: timestamp, aadhar: null, pan: null };
+    setCustomers([...customers, rec]);
+    // open OTP modal to simulate sending
+    setOtpTarget({ type: 'customer', id });
+    setShowOtpModal(true);
+    toast.message("OTP generated & sent (mock). Use 123456 to verify.");
   };
-  
-  setCustomers([...customers, rec]);
-
-  setOtpTarget({ type: 'customer', id });
-  setShowOtpModal(true);
-  toast.message("OTP generated & sent (mock). Use 123456 to verify.");
-};
-
 
   const verifyOtp = () => {
     if (otpValue.trim() === "123456") {
